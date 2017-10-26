@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		
+	</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<% for(let i = 0; i < parsedData.length; i++){ %>
+					<div class="col-sm-3">
+						<img src="<%= imageBaseUrl + parsedData[i].poster_path %>" />
+					</div>
+				<% } %>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
