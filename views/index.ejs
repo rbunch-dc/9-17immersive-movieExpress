@@ -6,15 +6,14 @@
 	</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
 </head>
 <body>
 
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
-				<form action="/search" method="get" id="search-form" class="form-inline">
-					<input type="text" placeholder="Movie Title" name="movieSearch2" />
+				<form action="/search?key=pumpkin" method="post" id="search-form" class="form-inline">
+					<input type="text" placeholder="Movie Title" name="movieSearch" />
 					<input type="text" placeholder="Actor Name" name="actorSearch" />
 					<input type="submit" class="btn btn-primary" />
 				</form>
