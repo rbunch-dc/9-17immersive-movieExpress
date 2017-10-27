@@ -13,6 +13,14 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
+				<form action="/search" method="get" id="search-form" class="form-inline">
+					<input type="text" placeholder="Movie Title" name="movieSearch2" />
+					<input type="text" placeholder="Actor Name" name="actorSearch" />
+					<input type="submit" class="btn btn-primary" />
+				</form>
+				<input type="text" name="haha" />
+			</div>
+			<div class="col-sm-12">
 				<% for(let i = 0; i < parsedData.length; i++){ %>
 					<div class="col-sm-3">
 						<img src="<%= imageBaseUrl + parsedData[i].poster_path %>" />

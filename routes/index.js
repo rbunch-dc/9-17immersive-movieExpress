@@ -24,4 +24,40 @@ router.get('/', function(req, res, next) {
   // res.render('index', { title: 'Express' });
 });
 
+// router.get('/search', (req, res)=>{
+router.post('/search', (req, res)=>{
+	// res.send("Search route here.");
+	// ANYTHING in a form that has a name snet through post 
+	// is available inside the req.body object
+	// req.query
+	res.json(req.body)
+})
+// HAS NOTHING IN COMMON WITH THIS...
+router.get('/search', (req, res)=>{
+	// ANYTHING in a form that has a name sent through 
+	// a GET request, is availabel inside the req.query object
+	res.json(req.query)
+})
+
+router.get('/test', function(req, res, next) {
+	res.send("<h1>THis is a test</h1>")
+	// res.json
+});
+
+router.get('/testsdfg', (req, res)=>{
+	res.send("It does now.")
+})
+
+router.get('/students', (req, res)=>{
+	const students = [
+		'eddie',
+		'valerie',
+		'micahel',
+		'allyson',
+		'scott',
+		'mikalya'
+	]
+	res.render('students',{students:students})
+})
+
 module.exports = router;
