@@ -23,6 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// the first arg for the routes file is 
+// prepending to EVERY route in that file.
+// I.e. the route "/get" in teh users file is 
+// actually "/users/get"
 app.use('/', index);
 app.use('/users', users);
 app.use('/chris', chris);

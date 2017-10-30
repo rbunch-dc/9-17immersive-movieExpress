@@ -9,20 +9,63 @@ const nowPlayingUrl = apiBaseUrl + '/movie/now_playing?api_key='+config.apiKey
 const imageBaseUrl = 'http://image.tmdb.org/t/p/w300';
 
 
+// router.get('/', function(req, res, next) {
+// 	res.send("HA HA! I cut you off!!")
+// 	next();
+// })
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	request.get(nowPlayingUrl,(error,response,movieData)=>{
 		var parsedData = JSON.parse(movieData);
+		// var query = "SELECT * FROM users";
+		// conneciton.query((query, error, data)=>{
+
+		// })
+		// res.json(parsedData)
 		console.log("=======================")
 		console.log(parsedData);
 		console.log("=======================")
-		res.render('index',{ 
-			parsedData: parsedData.results,
-			imageBaseUrl: imageBaseUrl 
-		})
+		// parsedData = undefined;
+		if(parsedData !== undefined){
+			// stuffToRender = callViewEngine(data);
+			// res.send(stuffToRender)
+			res.render('index',{ 
+				parsedData: parsedData.results,
+				imageBaseUrl: imageBaseUrl 
+			});	
+
+			// var body = buildBody(safeDataFromDB);
+			// res.writeHead(200,{});
+			// res.send(buildBody)
+
+		}else{
+			res.json("There was an error.");
+		}
 	});
-  // res.render('index', { title: 'Express' });
+	// res.render('index', { title: 'Express' });
 });
+
+// function with () means run it NOW.
+// function without () means pass it so it can run later
+// somewhere inside of request...
+function Request(){
+	// constructor...
+}
+Request.prototype.get = function(url,callBack){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url);
+	xhr.onload = function() {
+	    if (xhr.status === 200) {
+	        alert('User\'s name is ' + xhr.responseText);
+	    }
+	    else {
+	        alert('Request failed.  Returned status of ' + xhr.status);
+	    }
+	};
+	var data = xhr.send();	
+	callBack(error, response, data);
+}
 
 // router.get('/search', (req, res)=>{
 router.post('/search', (req, res)=>{
@@ -38,13 +81,36 @@ router.post('/search', (req, res)=>{
 	request.get(searchUrl,(error,response,movieData)=>{
 		var parsedData = JSON.parse(movieData);
 		// res.json(parsedData);
-		res.render('index',{ 
-			parsedData: parsedData.results,
-			imageBaseUrl: imageBaseUrl 
-		})
-		
+		// console.log(parsedData);
+		res.render(
+			'index',
+			{
+				parsedData: parsedData.results,
+				imageBaseUrl: imageBaseUrl 
+			}
+		);
 	})
 });
+
+// if you have /: that part of the path is WILD!
+// in this case, /movie/:movieId will trigger on /movie/ANYTHING
+// to access the ANYTHING, you go to req.params.ANYTHING
+router.get('/movie/:movieId',(req, res)=>{
+	// res.json(req.params);
+	// somewhere, in the movieAPI backend, they made some JSON then did...
+	// jsonToSend = JSON.stringify(jsonData);
+	var movieId = req.params.movieId;
+	var thisMovieUrl = `${apiBaseUrl}/movie/${movieId}?api_key=${config.apiKey}`;
+	request.get(thisMovieUrl,(error, response, movieData)=>{
+		var parsedData = JSON.parse(movieData);
+		// res.writeHead(200,{contentType:'txt/html'})
+		// res.json(parsedData);
+		res.render('single-movie',{
+			movieData: parsedData,
+			imageBaseUrl:imageBaseUrl
+		})
+	})
+})
 
 // HAS NOTHING IN COMMON WITH THIS...
 router.get('/search', (req, res)=>{
@@ -74,7 +140,12 @@ router.get('/students', (req, res)=>{
 		'scott',
 		'mikalya'
 	]
-	res.render('students',{students:students})
+	res.render(
+		'students',
+		{
+			students:students
+		}
+	)
 })
 
 module.exports = router;
