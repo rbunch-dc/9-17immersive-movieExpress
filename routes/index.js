@@ -3,6 +3,11 @@ var router = express.Router();
 // var mysql = require('mysql')
 var config = require('../config/config');
 var request = require('request');
+var mysql = require('mysql');
+var connection = mysql.createConnection(config.db);
+connection.connect((error)=>{
+	console.log(error);
+});
 
 const apiBaseUrl = 'http://api.themoviedb.org/3';
 const nowPlayingUrl = apiBaseUrl + '/movie/now_playing?api_key='+config.apiKey
@@ -20,6 +25,12 @@ router.post('/', function(req, res, next) {
 })
 
 router.get('/', function(req, res, next) {
+	var message = req.query.msg;
+	if(message == "registerd"){
+		message = "Congratulations! You are regsitered! Enjoy the site."
+	}else if(message == "fail"){
+		message = "That user/password combination is not recognzed. please try again"
+	}
 	request.get(nowPlayingUrl,(error,response,movieData)=>{
 		var parsedData = JSON.parse(movieData);
 		// var query = "SELECT * FROM users";
@@ -36,7 +47,8 @@ router.get('/', function(req, res, next) {
 			// res.send(stuffToRender)
 			res.render('index',{ 
 				parsedData: parsedData.results,
-				imageBaseUrl: imageBaseUrl 
+				imageBaseUrl: imageBaseUrl,
+				message: message
 			});	
 
 			// var body = buildBody(safeDataFromDB);
@@ -57,7 +69,32 @@ router.get('/register', (req, res, next)=>{
 });
 
 router.post('/registerProcess', (req, res, next)=>{
-	res.json(req.body);
+	// res.json(req.body);
+	var name = req.body.name;
+	var email = req.body.email;
+	var password = req.body.password;
+	// first of all, check to see if this user is registered...
+	// we need a select statement...
+	const selectQuery = "SELECT * FROM users WHERE email = ?;";
+	connection.query(selectQuery,[email],(error, results)=>{
+	// if the email already exists, stop, send them an error
+		if(results.length == 0){
+			// this user is not in the DB! Insert them...
+			var insertQuery = "INSERT INTO users (name, email, password) VALUES (?,?,?);";
+			connection.query(insertQuery,[name, email, password],(error, results)=>{
+				if (error){
+					throw error;
+				}else{
+					res.redirect("/?msg=registered");
+				}
+			});
+		}else{
+			res.redirect("/?msg=fail");
+		}
+	});
+	
+	// if the email doesn't exist, insert it into the database
+
 });
 
 // function with () means run it NOW.
