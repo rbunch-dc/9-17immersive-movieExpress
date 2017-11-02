@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
 <head>
-	<title>
-		
-	</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<title>	Movie App </title>
 	
+	<% include head %>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 
 	<script type="text/javascript">
@@ -32,18 +31,20 @@
 		//   method: "post"
 		// });		
 
-		myApp = angular.module('myApp',[]);
-		myApp.controller('myController',function($scope){
-			$scope.test = "THI IS A TEST!!!"
-		})
+		// myApp = angular.module('myApp',[]);
+		// myApp.controller('myController',function($scope){
+		// 	$scope.test = "THI IS A TEST!!!"
+		// })
 
 	</script>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
 </head>
 <body ng-controller="myController">
 
-	<li ng-model="test">{{test}}</li>
+	<% include navbar %>
+
+	<!-- <li ng-model="test">{{test}}</li> -->
 
 	<div class="container">
 		<div class="row">
@@ -54,13 +55,7 @@
 				<%= a %> -->
 				<!-- %= is like $('body').text() -->
 				<!-- %- is like $('body').html() -->
-
-				<form action="/search?key=pumpkin" method="post" id="search-form" class="form-inline">
-					<input type="text" id="movie" placeholder="Movie Title" name="movieSearch" />
-					<input type="text" placeholder="Actor Name" name="actorSearch" />
-					<input type="submit" class="btn btn-primary" />
-				</form>
-				<input type="text" name="haha" />
+				<!-- <input type="text" name="haha" /> -->
 			</div>
 <!-- 		If I do < % without an = sign, it means RUN THIS
 		If I do < %= it means, PRINT this to the window.document -->

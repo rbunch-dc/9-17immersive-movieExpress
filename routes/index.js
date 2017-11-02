@@ -15,6 +15,10 @@ const imageBaseUrl = 'http://image.tmdb.org/t/p/w300';
 // })
 
 /* GET home page. */
+router.post('/', function(req, res, next) {
+	res.send("Hello")
+})
+
 router.get('/', function(req, res, next) {
 	request.get(nowPlayingUrl,(error,response,movieData)=>{
 		var parsedData = JSON.parse(movieData);
@@ -46,26 +50,36 @@ router.get('/', function(req, res, next) {
 	// res.render('index', { title: 'Express' });
 });
 
+router.get('/register', (req, res, next)=>{
+	res.render('register', {
+
+	});
+});
+
+router.post('/registerProcess', (req, res, next)=>{
+	res.json(req.body);
+});
+
 // function with () means run it NOW.
 // function without () means pass it so it can run later
 // somewhere inside of request...
-function Request(){
-	// constructor...
-}
-Request.prototype.get = function(url,callBack){
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url);
-	xhr.onload = function() {
-	    if (xhr.status === 200) {
-	        alert('User\'s name is ' + xhr.responseText);
-	    }
-	    else {
-	        alert('Request failed.  Returned status of ' + xhr.status);
-	    }
-	};
-	var data = xhr.send();	
-	callBack(error, response, data);
-}
+// function Request(){
+// 	// constructor...
+// }
+// Request.prototype.get = function(url,callBack){
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('GET', url);
+// 	xhr.onload = function() {
+// 	    if (xhr.status === 200) {
+// 	        alert('User\'s name is ' + xhr.responseText);
+// 	    }
+// 	    else {
+// 	        alert('Request failed.  Returned status of ' + xhr.status);
+// 	    }
+// 	};
+// 	var data = xhr.send();	
+// 	callBack(error, response, data);
+// }
 
 // router.get('/search', (req, res)=>{
 router.post('/search', (req, res)=>{
