@@ -4,6 +4,10 @@ var router = express.Router();
 var config = require('../config/config');
 var request = require('request');
 var mysql = require('mysql');
+// include bcrypt so we can protect user's passwords
+var bcrypt = require('bcrypt-nodejs');
+
+
 var connection = mysql.createConnection(config.db);
 connection.connect((error)=>{
 	console.log(error);
@@ -26,7 +30,7 @@ router.post('/', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
 	var message = req.query.msg;
-	if(message == "registerd"){
+	if(message == "registered"){
 		message = "Congratulations! You are regsitered! Enjoy the site."
 	}else if(message == "fail"){
 		message = "That user/password combination is not recognzed. please try again"
@@ -38,9 +42,9 @@ router.get('/', function(req, res, next) {
 
 		// })
 		// res.json(parsedData)
-		console.log("=======================")
-		console.log(parsedData);
-		console.log("=======================")
+		// console.log("=======================")
+		// console.log(parsedData);
+		// console.log("=======================")
 		// parsedData = undefined;
 		if(parsedData !== undefined){
 			// stuffToRender = callViewEngine(data);
@@ -64,8 +68,16 @@ router.get('/', function(req, res, next) {
 
 router.get('/register', (req, res, next)=>{
 	res.render('register', {
-
 	});
+});
+
+router.get('/login',(req, res)=>{
+	res.render('login',{})
+})
+
+router.post('/loginProcess', (req, res, next)=>{
+	var email = req.body.email;
+	var password = req.body.password;
 });
 
 router.post('/registerProcess', (req, res, next)=>{
@@ -73,6 +85,8 @@ router.post('/registerProcess', (req, res, next)=>{
 	var name = req.body.name;
 	var email = req.body.email;
 	var password = req.body.password;
+	// Convert the english password, to a bcrypt hash
+	var hash = bcrypt.hashSync(password);
 	// first of all, check to see if this user is registered...
 	// we need a select statement...
 	const selectQuery = "SELECT * FROM users WHERE email = ?;";
@@ -81,7 +95,7 @@ router.post('/registerProcess', (req, res, next)=>{
 		if(results.length == 0){
 			// this user is not in the DB! Insert them...
 			var insertQuery = "INSERT INTO users (name, email, password) VALUES (?,?,?);";
-			connection.query(insertQuery,[name, email, password],(error, results)=>{
+			connection.query(insertQuery,[name, email, hash],(error, results)=>{
 				if (error){
 					throw error;
 				}else{
